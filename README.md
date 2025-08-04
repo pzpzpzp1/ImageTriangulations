@@ -27,12 +27,12 @@ See [manuscript](https://drive.google.com/file/d/1ZqjFKV4kbAaghAXSow4ooyxp1CD9hM
 ## Quick Start
 
 For default functionality, run `python batchrun1.py`. 
+The default batch should finish in less than 5 minutes total.
 
 Outputs will appear in `/output`
 * see `/output/**/video.mp4` to see the process
 * see `/output/**/still_B10.png` for final piece
 
-The default batch should finish in less than 5 minutes total.
 
 ## Basic Usage
 
