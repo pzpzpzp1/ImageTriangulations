@@ -145,7 +145,7 @@ def image_triangulation(
     approx = Approximator(degree) # Approximator for vertex gradient flow
     subdiv_approx = Approximator(0)  # Constant approximator for subdivision
     
-    # Compute initial energy
+    # Compute initial energy to find balance between area and image losses
     extra, energy, colors = approx.compute_energy(img, mesh, integral_1d_samples, salmap, return_gradient=False)
     area_energy0 = get_area_energy(mesh, salmap, return_gradient=False)
     area_factor = abs(energy / (area_energy0 * 2))
@@ -167,15 +167,15 @@ def image_triangulation(
     # Display initial state
     render(img, mesh, colors, approx, None, salmap)
     
-    # Simulation loop
-    dt = 0.4 # initial dt. only matters for the 'None' dtStrategy, which is not recommended
-    subdiv_count = 1
+    # allocate tracking data
     subdiv_iters = np.zeros(subdiv_max, dtype=int)
     dts = np.zeros(max_iters)
     energies = np.zeros(max_iters)
     grad_norms = np.zeros(max_iters)
     
-    # Optimization loop
+    # Optimization loop. Vary continuous and discrete parameters to minimize energy
+    dt = 0.4 # initial dt. only matters for the 'None' dtStrategy, which is not recommended
+    subdiv_count = 1
     for i in range(max_iters):
         if save_out:
             plt.title(f'(iter:{i}) (subdiviters:{subdiv_count-1}) (nX:{mesh.nX}) (nT:{mesh.nT})')
@@ -186,7 +186,7 @@ def image_triangulation(
         
         energy_comp_start = time.time()
         
-        # Compute energy and gradient
+        # Compute energy and gradient for continuous update
         extra, approx_energy, colors, grad = approx.compute_energy(img, mesh, integral_1d_samples, salmap, return_gradient=True)
         area_energy, area_gradient = get_area_energy(mesh, salmap, return_gradient=True)
         
@@ -264,7 +264,7 @@ def image_triangulation(
                 timedata.subdiv_time.append(time.time() - subdiv_time_start)
                 
                 print(f"Subdivision {subdiv_count-1} completed: {X.shape[0]} vertices, {T.shape[0]} triangles")
-                continue
+                continue # do not do continuous step if already did discrete step
             else:
                 print("Optimization finished!")
                 break
