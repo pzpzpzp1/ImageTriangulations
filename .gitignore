@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+
+# Output files
+output/
+*.npz
+*.mp4
+*.pdf
+*.png
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS files
+.DS_Store
+._*
+
+# Temporary files
+*.tmp
+*.log
+
+# additional method inputs
+images/*
+manualsaliency/*
