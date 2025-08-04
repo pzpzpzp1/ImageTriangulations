@@ -1,5 +1,5 @@
 #!/bin/bash
 # Usage: ./wipeit.sh
 
-rm manualsaliency/*
-rm output/*
+rm -r manualsaliency/*
+rm -r output/*
